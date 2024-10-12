@@ -31,12 +31,12 @@ class RegisterForm(forms.ModelForm):
     
 # LOGIN FORM
 class LoginForm(forms.ModelForm):
-    username = forms.CharField(max_length=50, required=True, label="Username")
+    email = forms.EmailField(max_length=75, label="Email")
     password = forms.CharField(widget=forms.PasswordInput, label="Password", required=True)
 
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = ['email', 'password']
 
 # BLOG FORM
 class BlogForm(forms.ModelForm):
