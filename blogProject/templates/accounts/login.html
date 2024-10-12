@@ -1,0 +1,65 @@
+<!-- EXTENDS -->
+{% extends "accounts/accounts_layout.html" %} {% load static %}
+
+<!-- TITLE -->
+{% block title %}Login - The Blog{% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div
+    class="flex-container h-100 w-50 d-flex justify-content-center align-items-center flex-column bg-white"
+  >
+    <form class="form w-75 d-flex flex-column bg-white mb-4" action={% url "login" %} method="post">
+      {% csrf_token %}
+      <div class="title mb-3">
+        <h1>Welcome Back 👋</h1>
+        <p>
+          A brand new day is here. It's your day to shape. <br />Sign in and get
+          started on your blogs.
+        </p>
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.email.id_for_label }}" class="form-label">Email address</label>
+        <input
+          type="email"
+          class="form-control"
+          id="{{ form.email.id_for_label }}"
+          name="{{ form.email.name }}"
+          value="{{ form.email.value|default_if_none:'' }}"
+          aria-describedby="emailHelp"
+        />
+        <div id="emailHelp" class="form-text">
+          We'll share your email with everyone.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="{{ form.password.id_for_label }}"  class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="{{ form.password.id_for_label }}"
+          name="{{ form.password.name }}"
+          value="{{ form.password.value|default_if_none:'' }}"
+        />
+        <div id="passwordHelp" class="form-text">And your password, too.</div>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+        <label class="form-check-label" for="exampleCheck1"
+          >Keep me signed in</label
+        >
+      </div>
+      {% if error %}
+          <p class="text-danger mb-3">{{ error }}</p>
+      {% endif %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <p>Don't have an account? <a href="{% url "register" %}">Sign up here.</a></p>
+  </div>
+  <div class="h-100 w-100 bg-white">
+    <img class="w-100 h-100" src={% static "media/login_view.jpg" %} style="object-fit: cover" alt="Source Image"/>
+  </div>
+</div>
+{% endblock %}

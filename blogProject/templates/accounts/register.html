@@ -1,0 +1,72 @@
+<!-- EXTENDS -->
+{% extends "accounts/accounts_layout.html" %} {% load static %}
+
+<!-- TITLE -->
+{% block title %}Login - The Blog{% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="h-100 w-100 bg-white">
+    <img class="w-100 h-100" src={% static "media/register_view.jpg" %} style="object-fit: cover" alt="Source Image"/>
+  </div>
+  <div
+    class="flex-container h-100 w-50 d-flex justify-content-center align-items-center flex-column bg-white"
+  >
+    <form class="form w-75 d-flex flex-column bg-white mb-4" action="{% url "register" %}" method="post">
+      {% csrf_token %}
+      <div class="title mb-3">
+        <h1>Join Us Today 💻</h1>
+        <p>
+            A new journey begins. Take the first step <br />Sign up and start creating your blogs.
+        </p>
+      </div>
+        <div class="mb-3">
+          <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="{{ form.username.id_for_label }}"
+            name="{{ form.username.name }}"
+            value="{{ form.username.value|default_if_none:'' }}"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.email.id_for_label }}" class="form-label">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="{{ form.email.id_for_label }}"
+            name="{{ form.email.name }}"
+            value="{{ form.email.value|default_if_none:'' }}"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="{{ form.password.id_for_label }}"
+            name="{{ form.password.name }}"
+            value="{{ form.password.value|default_if_none:'' }}"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="{{ form.password_confirm.id_for_label }}" class="form-label">Password Confirm</label>
+          <input
+            type="password"
+            class="form-control"
+            id="{{ form.password_confirm.id_for_label }}"
+            name="{{ form.password_confirm.name }}"
+            value="{{ form.password_confirm.value|default_if_none:'' }}"
+          />
+        </div>
+        {% if error %}
+          <p class="text-danger mb-3">{{ error }}</p>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <p>Already have an account? <a href="{% url "login" %}">Login here.</a></p>
+  </div>
+</div>
+{% endblock %}
