@@ -12,9 +12,19 @@ def home_view(request):
 
 # BLOG LIST VIEW
 def blog_list_view(request):
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.filter(status="published").order_by("-created_at")
     return render(request, 'public/blog_list.html', {'blogs': blogs})
 
+# BLOG DETAIL VIEW
+def blog_detail_view(request, id):
+    blog = Blog.objects.get(blog_id = id, status="published")
+    return render(request, 'public/blog_detail.html', {"blog": blog})
+
+# MY BLOG VIEW
+def my_blog_view(request):
+    publishedBlogs = Blog.objects.filter(author = request.user, status = "published")
+    draftBlogs = Blog.objects.filter(author = request.user, status = "draft")
+    return render(request, 'private/my_blog.html', {'publishedBlogs': publishedBlogs, 'draftBlogs': draftBlogs})
 
 # LOGIN VIEW
 def login_view(request):
@@ -104,6 +114,11 @@ def create_blog_view(request):
         elif action == "cancel":
             return redirect("blog_list")
         
+        elif action == "delete":
+            blog = form.save(commit=False)
+            blog.delete()
+            return redirect("blog_list")
+        
         return render(request, 'private/create_blog.html', {"form": form, "error": createBlogErr})
         
     return render(request, 'private/create_blog.html', {'form': form})
@@ -125,9 +140,9 @@ def update_blog_view(request, id):
             return redirect('home')
         
         else:
-            return render(request, 'private/update_blog.html', {'form': form, 'error': updateBlogErr})
+            return render(request, 'private/create_blog.html', {'form': form, 'error': updateBlogErr})
         
-    return render(request, 'private/update_blog.html', {'form': form})
+    return render(request, 'private/create_blog.html', {'form': form})
 
 
 # DELETE BLOG VIEW

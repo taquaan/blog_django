@@ -11,7 +11,12 @@
   <h3 class="mb-4">Create and Manage your Blogs</h3>
 </div>
 
-<form method="POST" enctype="multipart/form-data" style="padding: 0rem 4.5rem">
+<form
+  class="mb-5"
+  method="POST"
+  enctype="multipart/form-data"
+  style="padding: 0rem 4.5rem"
+>
   {% csrf_token %}
   <!-- TITLE UPLOAD FIELD -->
   <div class="mb-3">
@@ -41,6 +46,20 @@
     />
   </div>
 
+  <!-- SUBTITLE UPLOAD FIELD -->
+  <div class="mb-3">
+    <label for="{{ form.subtitle.id_for_label }}" class="form-label"
+      >Subtitle:</label
+    >
+    <textarea
+      type="text"
+      class="form-control"
+      name="{{ form.subtitle.name }}"
+      id="{{ form.subtitle.id_for_label }}"
+      style="height: 100px"
+    ></textarea>
+  </div>
+
   <!-- CONTENT UPLOAD FIELD -->
   <div class="mb-5">
     <label for="{{ form.content.id_for_label }}" class="form-label"
@@ -68,10 +87,18 @@
   <button
     type="submit"
     name="action"
-    value="cancel"
+    value="delete"
     class="btn btn-outline-danger"
   >
-    Cancel and Delete
+    Delete
+  </button>
+  <button
+    type="submit"
+    name="action"
+    value="cancel"
+    class="btn btn-outline-secondary"
+  >
+    Cancel
   </button>
 </form>
 
