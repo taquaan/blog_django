@@ -1,0 +1,261 @@
+<!-- EXTENDS -->
+{% extends "layout.html" %} {% load static %}
+
+<!-- TITLE -->
+{% block title %}Homepage - The Blog{% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+<div class="hero position-relative" style="height: 75vh">
+  <img
+    class="hero-img position-relative w-100 h-100"
+    src="{% static 'media/home.jpg' %}"
+    style="filter: brightness(40%); object-fit: cover"
+  />
+  <div
+    class="hero-text position-absolute text-white bottom-0 left-0 w-75"
+    style="padding: 4.5rem"
+  >
+    <p class="mb-1" style="font-size: 1rem">Welcome to The Blog,</p>
+    <h1 class="mb-3" style="font-size: 3.5rem">
+      Stay Ahead in the World of Tech
+    </h1>
+    <p class="mb-3" style="font-size: 1.15rem">
+      Explore a diverse range of articles, tutorials, and news updates that
+      empower you to enhance your skills, stay informed, and connect with a
+      vibrant community of tech enthusiasts. Join us on this journey of
+      discovery and innovation!
+    </p>
+  </div>
+</div>
+
+<div class="recent" style="padding: 2rem 4.5rem">
+  <div class="recent-title">
+    <p class="mb-1 text-primary">Explore the newest tech</p>
+    <h3 class="mb-4">Recent Blog Posts</h3>
+  </div>
+  <div class="recent">
+    <a href="#" class="post-recent card mb-3 text-decoration-none">
+      <div class="row g-0">
+        <div class="col-md-3">
+          <img
+            src="{% static 'media/home.jpg' %}"
+            class="img-fluid rounded-start"
+          />
+        </div>
+        <div class="col-md-9" style="padding: 2rem">
+          <div class="card-body">
+            <p class="card-text mb-1">
+              <small class="text-muted author-date"
+                ><span class="author">Alec Whittmen</span> -
+                <span class="date"> 1 Jan 2023</span></small
+              >
+            </p>
+            <h2 class="card-title mb-4">
+              Unlocking the Power of Django: A Comprehensive Guide for Beginners
+            </h2>
+            <p class="card-text">
+              In the world of web development, Django has emerged as one of the
+              most popular and powerful web frameworks. Built on Python, Django
+              allows developers to create robust, scalable web applications
+              quickly and efficiently. Whether you’re a beginner looking to dive
+              into web development or an experienced developer wanting to
+              explore a new framework, Django has something to offer.
+            </p>
+          </div>
+        </div>
+      </div>
+    </a>
+    <a href="#" class="post-recent card mb-3 text-decoration-none">
+      <div class="row g-0">
+        <div class="col-md-9" style="padding: 2rem">
+          <div class="card-body">
+            <p class="card-text mb-1">
+              <small class="text-muted author-date"
+                ><span class="author">Emily Chen</span> -
+                <span class="date"> 15 Oct 2024</span></small
+              >
+            </p>
+            <h2 class="card-title mb-4">
+              The Future of Artificial Intelligence: Opportunities and
+              Challenges
+            </h2>
+            <p class="card-text">
+              As we stand on the brink of a new era in technology, artificial
+              intelligence (AI) continues to dominate discussions among
+              technologists, business leaders, and policymakers alike. With
+              advancements in machine learning, natural language processing, and
+              computer vision, AI is poised to transform numerous industries and
+              aspects of our daily lives. But what does the future hold for this
+              rapidly evolving field?
+            </p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <img
+            src="{% static 'media/home.jpg' %}"
+            class="img-fluid rounded-end"
+          />
+        </div>
+      </div>
+    </a>
+    <a href="#" class="post-recent card mb-3 text-decoration-none">
+      <div class="row g-0">
+        <div class="col-md-3">
+          <img
+            src="{% static 'media/home.jpg' %}"
+            class="img-fluid rounded-start"
+          />
+        </div>
+        <div class="col-md-9" style="padding: 2rem">
+          <div class="card-body">
+            <p class="card-text mb-1">
+              <small class="text-muted author-date"
+                ><span class="author">Sarah Johnson</span> -
+                <span class="date"> 18 Nov 2023</span></small
+              >
+            </p>
+            <h2 class="card-title mb-4">
+              Embracing the Cloud: Transforming Business Operations in the
+              Digital Age
+            </h2>
+            <p class="card-text">
+              In the past decade, cloud computing has revolutionized the way
+              businesses operate, enabling organizations to become more agile,
+              scalable, and efficient. As companies increasingly migrate to the
+              cloud, understanding its implications and advantages is crucial
+              for leveraging this transformative technology. But what exactly is
+              cloud computing, and how can it benefit your business?
+            </p>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="recent" style="padding: 2rem 4.5rem">
+  <div class="recent-title">
+    <p class="mb-1 text-primary">Expand your tech knowledge</p>
+    <a class="text-decoration-none text-dark" href="{% url 'blog_list' %}"
+      ><h3 class="mb-4 d-inline-block">
+        All Blogs <i class="fa-solid fa-chevron-right fa-xs ms-2"></i></h3
+    ></a>
+  </div>
+  <div class="all w-100">
+    <div class="container-fluid">
+      <div class="pol row row-cols-3 gy-1" style="gap: 1%">
+        <!-- ALL BLOG POSTS -->
+        <div class="card col p-0 mb-3" style="width: 32.6%">
+          <img src="{% static "media/home.jpg" %}" class="card-img-top img-fluid
+          custom-img" style="height: 200px; object-fit: cover"/>
+          <div class="card-body" style="padding-bottom: 1.75rem">
+            <p class="card-text mb-2">
+              <small class="text-muted author-date"
+                ><span class="author">Sarah Johnson</span> -
+                <span class="date"> 18 Nov 2023</span></small
+              >
+            </p>
+
+            <a href="#" class="text-decoration-none">
+              <h4 class="card-title mb-3 text-dark">
+                Embracing the Cloud: Transforming Business Operations in the
+                Digital Age
+              </h4>
+            </a>
+
+            <p
+              class="card-text"
+              style="
+                -webkit-line-clamp: 3;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              "
+            >
+              In the past decade, cloud computing has revolutionized the way
+              businesses operate, enabling organizations to become more agile,
+              scalable, and efficient. As companies increasingly migrate to the
+              cloud, understanding its implications and advantages is crucial
+              for leveraging this transformative technology. But what exactly is
+              cloud computing, and how can it benefit your business?
+            </p>
+          </div>
+        </div>
+        <div class="card col p-0 mb-3" style="width: 32.6%">
+          <img src="{% static "media/home.jpg" %}" class="card-img-top img-fluid
+          custom-img" style="height: 200px; object-fit: cover"/>
+          <div class="card-body" style="padding-bottom: 1.75rem">
+            <p class="card-text mb-2">
+              <small class="text-muted author-date"
+                ><span class="author">Sarah Johnson</span> -
+                <span class="date"> 18 Nov 2023</span></small
+              >
+            </p>
+
+            <a href="#" class="text-decoration-none">
+              <h4 class="card-title mb-3 text-dark">
+                Embracing the Cloud: Transforming Business Operations in the
+                Digital Age
+              </h4>
+            </a>
+
+            <p
+              class="card-text"
+              style="
+                -webkit-line-clamp: 3;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              "
+            >
+              In the past decade, cloud computing has revolutionized the way
+              businesses operate, enabling organizations to become more agile,
+              scalable, and efficient. As companies increasingly migrate to the
+              cloud, understanding its implications and advantages is crucial
+              for leveraging this transformative technology. But what exactly is
+              cloud computing, and how can it benefit your business?
+            </p>
+          </div>
+        </div>
+        <div class="card col p-0 mb-3" style="width: 32.6%">
+          <img src="{% static "media/home.jpg" %}" class="card-img-top img-fluid
+          custom-img" style="height: 200px; object-fit: cover"/>
+          <div class="card-body" style="padding-bottom: 1.75rem">
+            <p class="card-text mb-2">
+              <small class="text-muted author-date"
+                ><span class="author">Sarah Johnson</span> -
+                <span class="date"> 18 Nov 2023</span></small
+              >
+            </p>
+
+            <a href="#" class="text-decoration-none">
+              <h4 class="card-title mb-3 text-dark">
+                Embracing the Cloud: Transforming Business Operations in the
+                Digital Age
+              </h4>
+            </a>
+
+            <p
+              class="card-text"
+              style="
+                -webkit-line-clamp: 3;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              "
+            >
+              In the past decade, cloud computing has revolutionized the way
+              businesses operate, enabling organizations to become more agile,
+              scalable, and efficient. As companies increasingly migrate to the
+              cloud, understanding its implications and advantages is crucial
+              for leveraging this transformative technology. But what exactly is
+              cloud computing, and how can it benefit your business?
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
