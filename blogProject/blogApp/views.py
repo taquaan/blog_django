@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .forms import LoginForm, RegisterForm, BlogForm
 from .models import Blog
+from django.contrib.auth.decorators import login_required
 
 # HOME VIEW
 def home_view(request):
@@ -70,22 +71,46 @@ def register_view(request):
 
 
 # CREATE BLOG VIEW
+@login_required
 def create_blog_view(request):
     form = BlogForm()
     createBlogErr = 'Created blog failed. Please try again'
     if request.method == "POST":
-        form = BlogForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-
-        else:
-            return render(request, 'private/create_blog.html', {"form": form, "error": createBlogErr})
+        form = BlogForm(request.POST, request.FILES)
+        
+        # Check which button was pressed
+        action = request.POST.get('action')
+        
+        if action == 'submit': 
+            if form.is_valid():
+                blog = form.save(commit=False)
+                blog.author = request.user
+                blog.status = "published"
+                blog.save()
+                return redirect('home')
+            else:
+                return render(request, 'private/create_blog.html', {"form": form, "error": createBlogErr})
+            
+        elif action == "save":
+            if form.is_valid():
+                blog = form.save(commit=False)
+                blog.author = request.user
+                blog.statud = "draft"  
+                blog.save()
+                return redirect('blog_list')
+            else:
+                return render(request, 'private/create_blog.html', {"form": form, "error": createBlogErr})
+            
+        elif action == "cancel":
+            return redirect("blog_list")
+        
+        return render(request, 'private/create_blog.html', {"form": form, "error": createBlogErr})
         
     return render(request, 'private/create_blog.html', {'form': form})
 
 
 # UPDATE BLOG VIEW
+@login_required
 def update_blog_view(request, id):
     updateBlogErr = 'Updated blog failed. Please try again'
 
@@ -106,6 +131,7 @@ def update_blog_view(request, id):
 
 
 # DELETE BLOG VIEW
+@login_required
 def delete_blog_view(request, id):
     blog = Blog.objects.get(blog_id=id)
             
