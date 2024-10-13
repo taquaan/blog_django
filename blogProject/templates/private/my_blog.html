@@ -1,0 +1,123 @@
+<!-- EXTENDS -->
+{% extends "layout.html" %} {% load static %}
+
+<!-- TITLE -->
+{% block title %}Create new blog - The Blog{% endblock %}
+
+<!-- CONTENT -->
+<!-- DRAFT BLOGS -->
+{% block content %}
+<div class="title pb-0" style="padding: 2rem 4.5rem">
+  <p class="mb-1 text-primary">Continue what you started</p>
+  <h3 class="mb-4">Draft Blogs</h3>
+</div>
+
+{% if draftBlogs%}
+<div class="draft-blogs" style="padding: 0 4.5rem">
+  {% for blog in draftBlogs %}
+  <div class="card col p-0 mb-3 position-relative" style="width: 32.6%">
+    <a
+      href="{% url 'update' blog.blog_id %}"
+      class="d-inline-block position-absolute end-0 top-0 m-3"
+    >
+      <button class="btn btn-light rounded p-3">
+        <i class="fa-solid fa-wrench text-primary fa-xl"></i>
+      </button>
+    </a>
+    <img
+      src="{{ blog.image.url }}"
+      class="card-img-top img-fluid custom-img"
+      style="height: 200px; object-fit: cover"
+    />
+    <div class="card-body" style="padding-bottom: 1.75rem">
+      <p class="card-text mb-2">
+        <small class="text-muted author-date"
+          ><span class="author">{{ blog.author.username }}</span> -
+          <span class="date">{{ blog.created_at|date:"d M Y" }}</span></small
+        >
+      </p>
+      <a
+        href="{% url 'blog_detail' blog.blog_id  %}"
+        class="text-decoration-none"
+      >
+        <h4 class="card-title mb-3 text-dark">{{ blog.title }}</h4>
+      </a>
+      <p
+        class="card-text"
+        style="
+          -webkit-line-clamp: 3;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        "
+      >
+        {{ blog.content|truncatewords:30 }}
+      </p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="draft-blogs m-5">
+  <h4 class="text-secondary text-center">There are currently no draft blogs</h4>
+</div>
+{% endif %}
+
+<!-- PUBLISHED BLOGS -->
+<div class="title pb-0" style="padding: 2rem 4.5rem">
+  <p class="mb-1 text-primary">Manage your blogs</p>
+  <h3 class="mb-4">Published Blogs</h3>
+</div>
+
+{% if publishedBlogs%}
+<div class="published-blogs mb-5" style="padding: 0 4.5rem">
+  {% for blog in publishedBlogs %}
+  <div class="card col p-0 mb-3 position-relative" style="width: 32.6%">
+    <a
+      href="{% url 'update' blog.blog_id %}"
+      class="d-inline-block position-absolute end-0 top-0 m-3"
+    >
+      <button class="btn btn-light rounded p-3">
+        <i class="fa-solid fa-wrench text-primary fa-xl"></i>
+      </button>
+    </a>
+    <img
+      src="{{ blog.image.url }}"
+      class="card-img-top img-fluid custom-img"
+      style="height: 200px; object-fit: cover"
+    />
+    <div class="card-body" style="padding-bottom: 1.75rem">
+      <p class="card-text mb-2">
+        <small class="text-muted author-date"
+          ><span class="author">{{ blog.author.username }}</span> -
+          <span class="date">{{ blog.created_at|date:"d M Y" }}</span></small
+        >
+      </p>
+      <a
+        href="{% url 'blog_detail' blog.blog_id  %}"
+        class="text-decoration-none"
+      >
+        <h4 class="card-title mb-3 text-dark">{{ blog.title }}</h4>
+      </a>
+      <p
+        class="card-text"
+        style="
+          -webkit-line-clamp: 3;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        "
+      >
+        {{ blog.content|truncatewords:30 }}
+      </p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="draft-blogs my-5">
+  <h4 class="text-secondary text-center">
+    There are currently no published blogs
+  </h4>
+</div>
+{% endif %} {% endblock %}

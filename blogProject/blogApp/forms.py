@@ -42,4 +42,4 @@ class LoginForm(forms.ModelForm):
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = ['title', 'image', 'content']
+        fields = ['title', 'image', 'subtitle', 'content']
