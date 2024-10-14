@@ -88,38 +88,7 @@ def create_blog_view(request):
     if request.method == "POST":
         form = BlogForm(request.POST, request.FILES)
         
-        # Check which button was pressed
-        action = request.POST.get('action')
-        
-        if action == 'submit': 
-            if form.is_valid():
-                blog = form.save(commit=False)
-                blog.author = request.user
-                blog.status = "published"
-                blog.save()
-                return redirect('home')
-            else:
-                return render(request, 'private/create_blog.html', {"form": form, "error": createBlogErr})
-            
-        elif action == "save":
-            if form.is_valid():
-                blog = form.save(commit=False)
-                blog.author = request.user
-                blog.statud = "draft"  
-                blog.save()
-                return redirect('blog_list')
-            else:
-                return render(request, 'private/create_blog.html', {"form": form, "error": createBlogErr})
-            
-        elif action == "cancel":
-            return redirect("blog_list")
-        
-        elif action == "delete":
-            blog = form.save(commit=False)
-            blog.delete()
-            return redirect("blog_list")
-        
-        return render(request, 'private/create_blog.html', {"form": form, "error": createBlogErr})
+        updateCreate(request, form, createBlogErr)
         
     return render(request, 'private/create_blog.html', {'form': form})
 
@@ -135,12 +104,7 @@ def update_blog_view(request, id):
 
     if request.method == 'POST':
         form = BlogForm(request.POST, instance=blog)
-        if (form.is_valid()):
-            form.save()
-            return redirect('home')
-        
-        else:
-            return render(request, 'private/create_blog.html', {'form': form, 'error': updateBlogErr})
+        updateCreate(request, form, updateBlogErr)
         
     return render(request, 'private/create_blog.html', {'form': form})
 
@@ -155,3 +119,38 @@ def delete_blog_view(request, id):
         return redirect('blog_list')
     
     return render(request, 'private/delete_blog.html', {'blog': blog})
+
+# HANDLE UPDATE CREATE
+def updateCreate(request, form, error):
+    # Check which button was pressed
+        action = request.POST.get('action')
+        
+        if action == 'submit': 
+            if form.is_valid():
+                blog = form.save(commit=False)
+                blog.author = request.user
+                blog.status = "published"
+                blog.save()
+                return redirect('home')
+            else:
+                return render(request, 'private/create_blog.html', {"form": form, "error": error})
+            
+        elif action == "save":
+            if form.is_valid():
+                blog = form.save(commit=False)
+                blog.author = request.user
+                blog.status = "draft"  
+                blog.save()
+                return redirect('blog_list')
+            else:
+                return render(request, 'private/create_blog.html', {"form": form, "error": error})
+            
+        elif action == "cancel":
+            return redirect("my_blog")
+        
+        elif action == "delete":
+            blog = form.save(commit=False)
+            blog.delete()
+            return redirect("my_blog")
+        
+        return render(request, 'private/create_blog.html', {"form": form, "error": error})
