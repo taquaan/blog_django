@@ -79,6 +79,15 @@ def register_view(request):
     
     return render(request, 'accounts/register.html', {'form': form})
 
+# SEARCH VIEW
+def search_view(request):
+    blogs = Blog.objects.all()
+    if request.method == "POST":
+        query = request.POST['search_query']
+        blogs = Blog.objects.filter(title__contains=query)
+        return render(request, "public/search_view.html", {"blogs": blogs})
+    return render(request, "public/search_view.html", {"blogs": blogs})
+
 
 # CREATE BLOG VIEW
 @login_required

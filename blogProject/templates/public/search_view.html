@@ -1,0 +1,72 @@
+<!-- EXTENDS -->
+{% extends "layout.html" %} {% load static %}
+
+<!-- TITLE -->
+{% block title %}Search - The Blog{% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+<!-- SEARCH FIELD -->
+<div class="search-title pt-5" style="padding: 0 4.5rem">
+  <p class="mb-1 text-primary">Search for your favorite blog</p>
+  <h3 class="mb-4 d-inline-block">
+    Search</i>
+  </h3>
+</div>
+<form class="d-flex" role="search" method="POST" style="padding: 0 4.5rem">
+  {% csrf_token %}
+  <input
+    class="form-control me-2"
+    type="search"
+    placeholder="Search"
+    name="search_query"
+    required
+    aria-label="Search"
+  />
+  <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+<!-- SEARCH RESULT -->
+<div class="search-result" style="padding: 2rem 4.5rem">
+  <div class="search-result w-100">
+    <div class="container-fluid">
+      <div class="pol row row-cols-3 gy-1" style="gap: 1%">
+        <!-- ALL BLOG POSTS -->
+        {% for blog in blogs %}
+        <div class="card col p-0 mb-3" style="width: 32.6%">
+          <img src="{{ blog.image.url }}" class="card-img-top img-fluid
+          custom-img" style="height: 200px; object-fit: cover"/>
+          <div class="card-body" style="padding-bottom: 1.75rem">
+            <p class="card-text mb-2">
+              <small class="text-muted author-date"
+                ><span class="author">{{ blog.author.username }}</span> -
+                <span class="date">{{  blog.created_at|date:"d M Y" }}</span></small
+              >
+            </p>
+
+            <a href="{% url "blog_detail" blog.blog_id %}" class="text-decoration-none">
+              <h4 class="card-title mb-3 text-dark">
+                {{ blog.title }}
+              </h4>
+            </a>
+
+            <p
+              class="card-text"
+              style="
+                -webkit-line-clamp: 3;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              "
+            >
+              {{ blog.content }}
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
