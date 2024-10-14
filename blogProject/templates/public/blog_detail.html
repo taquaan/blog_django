@@ -12,10 +12,7 @@
     src="{{ blog.image.url }}"
     style="filter: brightness(40%); object-fit: cover"
   />
-  <div
-    class="hero-text position-absolute text-white bottom-0 left-0 w-75"
-    style="padding: 4.5rem"
-  >
+  <div class="hero-text position-absolute text-white bottom-0 left-0 w-75 p-5">
     <p class="mb-1" style="font-size: 1rem">
       {{blog.author.username}} - {{ blog.created_at|date:"d M Y" }}
     </p>
@@ -24,7 +21,7 @@
   </div>
 </div>
 
-<div class="main-content" style="padding: 4.5rem">
+<div class="main-content p-5">
   <p class="text-dark">{{ blog.content }}</p>
 </div>
 {% endblock %}
