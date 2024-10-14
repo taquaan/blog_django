@@ -7,8 +7,9 @@ from django.contrib.auth.decorators import login_required
 
 # HOME VIEW
 def home_view(request):
-    return render(request, 'public/home.html')
-
+    recentBlogs = Blog.objects.all()[:3]
+    previewBlogs = Blog.objects.all()[:25]
+    return render(request, 'public/home.html', {"recentBlogs": recentBlogs, "previewBlogs": previewBlogs})
 
 # BLOG LIST VIEW
 def blog_list_view(request):
@@ -32,7 +33,14 @@ def login_view(request):
     loginErr = "Invalid login credentials. Please try again."
 
     if request.method == "POST":
+        # Handle Logout function
+        action = request.POST.get('action')
+        if action == "logout":
+            logout(request)
+            return redirect(request.path)
+          
         form = LoginForm(request.POST)
+    
         if form.is_valid():
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
@@ -58,7 +66,6 @@ def login_view(request):
     
     return render(request, 'accounts/login.html', {'form': form})
 
-
 # REGISTER FORM
 def register_view(request):
     form = RegisterForm()
@@ -81,10 +88,10 @@ def register_view(request):
 
 # SEARCH VIEW
 def search_view(request):
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.filter(status="published").order_by("-created_at")[:15]
     if request.method == "POST":
         query = request.POST['search_query']
-        blogs = Blog.objects.filter(title__contains=query)
+        blogs = Blog.objects.filter(status="published",title__contains=query)[:15]
         return render(request, "public/search_view.html", {"blogs": blogs})
     return render(request, "public/search_view.html", {"blogs": blogs})
 
