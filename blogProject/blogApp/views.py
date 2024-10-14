@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 # HOME VIEW
 def home_view(request):
-    recentBlogs = Blog.objects.all()[:3]
+    recentBlogs = Blog.objects.all().order_by("-created_at")[:3]
     previewBlogs = Blog.objects.all()[:25]
     return render(request, 'public/home.html', {"recentBlogs": recentBlogs, "previewBlogs": previewBlogs})
 
