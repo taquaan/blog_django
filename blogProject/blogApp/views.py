@@ -136,7 +136,7 @@ def delete_blog_view(request, id):
     
     return render(request, 'private/delete_blog.html', {'blog': blog})
 
-# HANDLE UPDATE CREATE
+# METHOD TO HANDLE UPDATE CREATE
 def updateCreate(request, form, error):
     # Check which button was pressed
         action = request.POST.get('action')
