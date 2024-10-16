@@ -18,4 +18,8 @@ urlpatterns = [
     # API URLs
     path('blogs/', viewsets.ListCreateBlogView.as_view(), name="create_get_blogs"),
     path('blogs/<int:blog_id>', viewsets.UpdateDeleteBlogView.as_view(), name="update_delete_blog"),
+    
+    # API USER URLs
+    path("users/", viewsets.ListCreateUserView.as_view(), name="create_get_users"),
+    path("users/<int:id>", viewsets.UpdateDeleteUserView.as_view(), name="update_delete_user"),
 ]
