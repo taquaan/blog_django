@@ -22,6 +22,7 @@
 </div>
 
 <div class="main-content p-5">
-  <p class="text-dark">{{ blog.content }}</p>
+  <p class="text-dark">{{ blog.introduction }}</p>
+  <p class="text-dark">{{ blog.content|safe }}</p>
 </div>
 {% endblock %}

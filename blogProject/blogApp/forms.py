@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import Blog
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 # REGISTER FORM
 class RegisterForm(forms.ModelForm):
@@ -40,6 +41,15 @@ class LoginForm(forms.ModelForm):
 
 # BLOG FORM
 class BlogForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.fields["content"].required = False
+
     class Meta:
         model = Blog
-        fields = ['title', 'image', 'subtitle', 'content']
+        fields = ['title', 'image', 'subtitle', 'introduction', 'content']
+        widgets = {
+              "content": CKEditor5Widget(
+                  attrs={"class": "django_ckeditor_5"}, config_name="blog"
+              )
+          }
