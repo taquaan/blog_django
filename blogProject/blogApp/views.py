@@ -22,6 +22,7 @@ def blog_detail_view(request, id):
     return render(request, 'public/blog_detail.html', {"blog": blog})
 
 # MY BLOG VIEW
+@login_required
 def my_blog_view(request):
     publishedBlogs = Blog.objects.filter(author = request.user, status = "published")
     draftBlogs = Blog.objects.filter(author = request.user, status = "draft")

@@ -5,7 +5,7 @@ from .api import viewsets
 urlpatterns = [
     # Template URLs
     path('', views.home_view, name="home"),
-    path('login/', views.login_view, name="login"),
+    path('accounts/login/', views.login_view, name="login"),
     path('register/', views.register_view, name="register"),
     path('create_blog/', views.create_blog_view, name="create"),
     path('blog_list/', views.blog_list_view, name="blog_list"),
