@@ -1,7 +1,9 @@
 from django.urls import path
 from . import views
+from .api import viewsets
 
 urlpatterns = [
+    # Template URLs
     path('', views.home_view, name="home"),
     path('login/', views.login_view, name="login"),
     path('register/', views.register_view, name="register"),
@@ -12,4 +14,8 @@ urlpatterns = [
     path('update_blog/<int:id>', views.update_blog_view, name="update"),
     path('delete_blog/<int:id>', views.delete_blog_view, name="delete"),
     path('search/', views.search_view, name="search"),
+    
+    # API URLs
+    path('blogs/', viewsets.ListCreateBlogView.as_view(), name="create_get_blogs"),
+    path('blogs/<int:blog_id>', viewsets.UpdateDeleteBlogView.as_view(), name="update_delete_blog"),
 ]
