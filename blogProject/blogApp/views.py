@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .forms import LoginForm, RegisterForm, BlogForm
-from .models import Blog
+from .forms import LoginForm, RegisterForm, BlogForm, CommentForm
+from .models import Blog, Comment
 from django.contrib.auth.decorators import login_required
 
 # HOME VIEW
@@ -19,7 +19,20 @@ def blog_list_view(request):
 # BLOG DETAIL VIEW
 def blog_detail_view(request, id):
     blog = Blog.objects.get(blog_id = id, status="published")
-    return render(request, 'public/blog_detail.html', {"blog": blog})
+    comments = Comment.objects.filter(blog=blog)
+    comment_form = CommentForm()
+
+    # HANDLE COMMENT CREATION
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.blog = blog
+            new_comment.user = request.user
+            new_comment.save()
+            return redirect('blog_detail', id=blog.blog_id)
+
+    return render(request, 'public/blog_detail.html', {"blog": blog, "comments": comments, "comment_form": comment_form})
 
 # MY BLOG VIEW
 @login_required

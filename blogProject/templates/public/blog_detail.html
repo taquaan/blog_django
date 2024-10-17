@@ -25,4 +25,42 @@
   <p class="text-dark">{{ blog.introduction }}</p>
   <p class="text-dark">{{ blog.content|safe }}</p>
 </div>
+
+<section class="comment-section">
+  <form style="margin: 0 3rem">
+    <div class="mb-3">
+      <label for="{{ comment_form.content.id_for_label }}" class="form-label"
+        >Your Comment</label
+      >
+      <textarea
+        type="text"
+        class="form-control"
+        id="{{ comment_form.content.id_for_label }}"
+        name="{{ comment_form.content.name }}"
+        value="{{ comment_form.content.value|default_if_none:''}}"
+        aria-describedby="commentHelp"
+        style="height: 150px"
+      ></textarea>
+      <div id="commentHelp" class="form-text">
+        Give your opinion about this blog
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Submit</button>
+  </form>
+  <div class="comment-list my-4" style="margin: 3rem">
+    <h5>Comments:</h5>
+    {% for comment in comments %}
+    <div class="container position-relative">
+      <div
+        class="card comment d-flex justify-content-center align-items-center"
+      >
+        <div class="card-body">{{comment.content}}</div>
+
+        {% if comment.user == request.user %}
+        <a href="{% url 'blog_detail' %}" class="btn btn-danger position-absolute bottom-0 right-0 p-4">Delete Comment</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
 {% endblock %}
