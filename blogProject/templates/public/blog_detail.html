@@ -27,7 +27,9 @@
 </div>
 
 <section class="comment-section">
-  <form style="margin: 0 3rem">
+  <form style="margin: 0 3rem" method="POST"
+  enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="mb-3">
       <label for="{{ comment_form.content.id_for_label }}" class="form-label"
         >Your Comment</label
@@ -45,19 +47,25 @@
         Give your opinion about this blog
       </div>
     </div>
-    <button type="submit" class="btn btn-primary w-100">Submit</button>
+    <button type="submit" class="btn btn-primary w-100" name="create_comment">Submit</button>
   </form>
   <div class="comment-list my-4" style="margin: 3rem">
     <h5>Comments:</h5>
+    <div class="container p-0 m-0" style="max-width: 100%">
     {% for comment in comments %}
-    <div class="container position-relative">
       <div
-        class="card comment d-flex justify-content-center align-items-center"
+        class="card comment position-relative"
       >
-        <div class="card-body">{{comment.content}}</div>
+        <div class="card-body ">
+          <p class="m-1"><strong>{{ comment.author.username }} - {{ comment.created_at|date:"d M Y"  }}</strong></p>
+          <p>{{comment.content}}</p></div>
 
-        {% if comment.user == request.user %}
-        <a href="{% url 'blog_detail' %}" class="btn btn-danger position-absolute bottom-0 right-0 p-4">Delete Comment</a>
+        {% if comment.author == request.user %}
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="comment_id" value="{{ comment.id }}">
+          <button type="submit" name="delete_comment"  class="btn btn-outline-danger position-absolute bottom-0 end-0 rounded border-4 px-2 m-2"><i class="fa-regular fa-trash-can" style="font-size: 2em"></i></button>
+        </form>
         {% endif %}
     </div>
     {% endfor %}

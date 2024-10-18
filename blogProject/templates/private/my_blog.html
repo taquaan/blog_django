@@ -54,7 +54,7 @@
           overflow: hidden;
         "
       >
-        {{ blog.content|truncatewords:30 }}
+        {{ blog.introduction|safe|truncatewords:30 }}
       </p>
     </div>
   </div>

@@ -24,9 +24,9 @@ class Blog(models.Model):
         return self.title
     
 class Comment(models.Model):
-    comment_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
