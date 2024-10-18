@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import Blog
+from .models import Blog, Comment
 from django_ckeditor_5.widgets import CKEditor5Widget
 
 # REGISTER FORM
@@ -53,3 +53,8 @@ class BlogForm(forms.ModelForm):
                   attrs={"class": "django_ckeditor_5"}, config_name="blog"
               )
           }
+        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']

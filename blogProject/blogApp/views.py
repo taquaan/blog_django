@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .forms import LoginForm, RegisterForm, BlogForm
-from .models import Blog
+from .forms import LoginForm, RegisterForm, BlogForm, CommentForm
+from .models import Blog, Comment
 from django.contrib.auth.decorators import login_required
 
 # HOME VIEW
 def home_view(request):
-    recentBlogs = Blog.objects.all().order_by("-created_at")[:3]
+    recentBlogs = Blog.objects.filter(status="published").order_by("-created_at")[:3]
     previewBlogs = Blog.objects.filter(status="published")[:25]
     return render(request, 'public/home.html', {"recentBlogs": recentBlogs, "previewBlogs": previewBlogs})
 
@@ -19,7 +19,26 @@ def blog_list_view(request):
 # BLOG DETAIL VIEW
 def blog_detail_view(request, id):
     blog = Blog.objects.get(blog_id = id, status="published")
-    return render(request, 'public/blog_detail.html', {"blog": blog})
+    comments = Comment.objects.filter(blog=blog)
+    comment_form = CommentForm()
+
+    # HANDLE COMMENT CREATION
+    if request.method == "POST":
+        if "create_comment" in request.POST:
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                new_comment = comment_form.save(commit=False)
+                new_comment.blog = blog
+                new_comment.author = request.user
+                new_comment.save()
+                return redirect('blog_detail', id=blog.blog_id)
+        elif "delete_comment" in request.POST:
+            comment_id = request.POST.get('comment_id')
+            comment = Comment.objects.get(id=comment_id)
+            comment.delete()
+            return redirect('blog_detail', blog.blog_id)
+
+    return render(request, 'public/blog_detail.html', {"blog": blog, "comments": comments, "comment_form": comment_form})
 
 # MY BLOG VIEW
 @login_required
