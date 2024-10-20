@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .forms import LoginForm, RegisterForm, BlogForm, CommentForm
-from .models import Blog, Comment
+from .models import Blog, Comment, Categories
 from django.contrib.auth.decorators import login_required
 
 # HOME VIEW
@@ -21,6 +21,7 @@ def blog_detail_view(request, id):
     blog = Blog.objects.get(blog_id = id, status="published")
     comments = Comment.objects.filter(blog=blog)
     comment_form = CommentForm()
+    categories = blog.categories.all()
 
     # HANDLE COMMENT CREATION
     if request.method == "POST":
@@ -32,7 +33,7 @@ def blog_detail_view(request, id):
             new_comment.save()
             return redirect('blog_detail', id=blog.blog_id)
 
-    return render(request, 'public/blog_detail.html', {"blog": blog, "comments": comments, "comment_form": comment_form})
+    return render(request, 'public/blog_detail.html', {"blog": blog, "comments": comments, "comment_form": comment_form, "categories": categories})
 
 # MY BLOG VIEW
 @login_required
@@ -114,13 +115,14 @@ def search_view(request):
 @login_required
 def create_blog_view(request):
     form = BlogForm()
+    categories = Categories.objects.all()
     createBlogErr = 'Created blog failed. Please try again'
     if request.method == "POST":
         form = BlogForm(request.POST, request.FILES)
         
-        updateCreate(request, form, createBlogErr)
+        updateCreate(request, form, createBlogErr, categories)
         
-    return render(request, 'private/create_blog.html', {'form': form})
+    return render(request, 'private/create_blog.html', {'form': form, "categories": categories})
 
 
 # UPDATE BLOG VIEW
@@ -151,7 +153,7 @@ def delete_blog_view(request, id):
     return render(request, 'private/delete_blog.html', {'blog': blog})
 
 # METHOD TO HANDLE UPDATE CREATE
-def updateCreate(request, form, error):
+def updateCreate(request, form, error, categories=None):
     # Check which button was pressed
         action = request.POST.get('action')
         
@@ -161,9 +163,10 @@ def updateCreate(request, form, error):
                 blog.author = request.user
                 blog.status = "published"
                 blog.save()
+                form.save_m2m()
                 return redirect('home')
             else:
-                return render(request, 'private/create_blog.html', {"form": form, "error": error})
+                return render(request, 'private/create_blog.html', {"form": form, "error": error, "categories": categories})
             
         elif action == "save":
             if form.is_valid():
@@ -171,9 +174,10 @@ def updateCreate(request, form, error):
                 blog.author = request.user
                 blog.status = "draft"  
                 blog.save()
+                form.save_m2m()
                 return redirect('blog_list')
             else:
-                return render(request, 'private/create_blog.html', {"form": form, "error": error})
+                return render(request, 'private/create_blog.html', {"form": form, "error": error, "categories": categories})
             
         elif action == "cancel":
             return redirect("my_blog")
@@ -183,4 +187,4 @@ def updateCreate(request, form, error):
             blog.delete()
             return redirect("my_blog")
         
-        return render(request, 'private/create_blog.html', {"form": form, "error": error})
+        return render(request, 'private/create_blog.html', {"form": form, "error": error, "categories": categories})

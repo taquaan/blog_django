@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 from django_ckeditor_5.fields import CKEditor5Field
 
 # Create your models here.
+class Categories(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
 class Blog(models.Model):
     STATUS_CHOICES = (
         ('draft', 'Draft'),
@@ -13,6 +19,7 @@ class Blog(models.Model):
     title = models.CharField(max_length=100)
     subtitle = models.CharField(max_length=300, null=True, blank=True)
     introduction = models.TextField(default="This is the main introduction")
+    categories = models.ManyToManyField(Categories)
     image = models.ImageField(upload_to='blog_images/', null=True, blank=True)
     content = CKEditor5Field('Text', config_name='extends')
     created_at = models.DateTimeField(auto_now_add=True)
