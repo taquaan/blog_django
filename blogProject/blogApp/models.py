@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django_ckeditor_5.fields import CKEditor5Field
 
@@ -18,6 +19,7 @@ class Blog(models.Model):
     blog_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     subtitle = models.CharField(max_length=300, null=True, blank=True)
+    published = models.DateTimeField(default=timezone.now)
     introduction = models.TextField(default="This is the main introduction")
     categories = models.ManyToManyField(Categories)
     image = models.ImageField(upload_to='blog_images/', null=True, blank=True)
