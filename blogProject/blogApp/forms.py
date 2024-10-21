@@ -47,7 +47,7 @@ class BlogForm(forms.ModelForm):
 
     class Meta:
         model = Blog
-        fields = ['title', 'image', 'subtitle', 'categories', 'introduction', 'content']
+        fields = ['title', 'image', 'subtitle', 'published', 'categories', 'introduction', 'content']
         widgets = {
               "content": CKEditor5Widget(
                   attrs={"class": "django_ckeditor_5"}, config_name="blog"
