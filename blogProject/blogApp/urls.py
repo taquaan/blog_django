@@ -13,6 +13,7 @@ urlpatterns = [
     path('blog_detail/<int:id>', views.blog_detail_view, name="blog_detail"),
     path('update_blog/<int:id>', views.update_blog_view, name="update"),
     path('search/', views.search_view, name="search"),
+    path('category_blog/<int:id>', views.category_view, name="category"),
     
     # API URLs
     path('blogs/', viewsets.ListCreateBlogView.as_view(), name="create_get_blogs"),

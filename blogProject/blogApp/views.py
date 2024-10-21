@@ -87,7 +87,7 @@ def login_view(request):
     
     return render(request, 'accounts/login.html', {'form': form})
 
-# REGISTER FORM
+# REGISTER VIEW
 def register_view(request):
     form = RegisterForm()
     regisErr = "Invalid credentials. Please try again."
@@ -115,7 +115,6 @@ def search_view(request):
         blogs = Blog.objects.filter(status="published",title__contains=query)[:15]
         return render(request, "public/search_view.html", {"blogs": blogs})
     return render(request, "public/search_view.html", {"blogs": blogs})
-
 
 # CREATE BLOG VIEW
 @login_required
@@ -147,6 +146,13 @@ def update_blog_view(request, id):
         updateCreate(request, form, updateBlogErr, categories, chosen_categories)
         
     return render(request, 'private/create_blog.html', {'form': form, 'categories': categories, 'chosen_categories': chosen_categories})
+
+# CATEGORY FILTER VIEW
+def category_view(request, id):
+    category = Categories.objects.get(id=id)
+    blogs = Blog.objects.filter(categories = category)
+    print(blogs)
+    return render(request, 'public/blog_cate.html', {"category": category, "blogs": blogs})
 
 # METHOD TO HANDLE UPDATE CREATE
 def updateCreate(request, form, error, categories=None, chosen_categories=None):

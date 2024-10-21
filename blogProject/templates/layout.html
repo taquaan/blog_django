@@ -19,7 +19,7 @@
   </head>
   <body>
     <nav
-      class="navbar navbar-expand-lg navbar-light bg-light"
+      class="navbar navbar-expand-lg navbar-light bg-white"
       style="z-index: 999; padding: 1.5rem 4.5rem"
     >
       <a class="navbar-brand" href="{% url 'home' %}"
@@ -119,6 +119,19 @@
             {% endif %}
             
           </li>
+        </ul>
+      </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid" style="padding: 0.05rem 4.5rem">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" style=" gap: 15px">
+          {% for available_category in available_categories %}
+            {% if available_category.name != "None" %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url "category" available_category.id %}">{{ available_category.name }}</a>
+            </li>
+            {% endif %}
+          {% endfor %}
         </ul>
       </div>
     </nav>
