@@ -71,6 +71,23 @@
       >Categories:</label
     >
     <div class="cate-list">
+      {% if chosen_categories %} {% for chosen_category in chosen_categories%}
+      <div class="cate-field position-relative">
+        <select
+          name="{{ form.categories.name }}"
+          id="{{ form.categories.id_for_label }}"
+          class="form-control cate-select mb-2"
+        >
+          {% for category in categories %}
+          <option value="{{ category.id }}"
+          {% if category.id == chosen_category.id %}selected{% endif %}>
+          {{ category.name }}</option>
+          {% endfor %}
+        </select>
+        <button class="delete-btn position-absolute end-0 top-0 bg-white" style="border: none; margin: .45rem"><i class="fas fa-times"></i></button>
+      </div>
+      {% endfor %}
+      {% else %}
       <div class="cate-field position-relative">
         <select
           name="{{ form.categories.name }}"
@@ -81,6 +98,8 @@
           <option value="{{ category.id }}">{{ category.name }}</option>
           {% endfor %}
         </select>
+        <button class="delete-btn position-absolute end-0 top-0 bg-white" style="border: none; margin: .45rem"><i class="fas fa-times"></i></button>
+        {% endif %}
       </div>
     </div>
     <button class="add-new-cate btn btn-primary w-100 mt-3">

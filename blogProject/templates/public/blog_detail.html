@@ -20,9 +20,7 @@
     <p class="mb-3" style="font-size: 1.15rem">{{ blog.subtitle }}</p>
     <div class="d-flex" style="gap: 10px">
       {% for category in categories %}
-        {% if category.name != "None" %}
-        <span class="badge bg-primary p-2">{{ category.name }}</span>
-        {% endif %}
+      <span class="badge bg-primary p-2">{{ category.name }}</span>
       {% endfor %}
     </div>
   </div>

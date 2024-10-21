@@ -132,13 +132,15 @@ def update_blog_view(request, id):
 
     # Initiate a new form with blog's data
     blog = Blog.objects.get(blog_id=id)
+    categories = Categories.objects.all()
+    chosen_categories = blog.categories.all()
     form = BlogForm(instance=blog)
 
     if request.method == 'POST':
         form = BlogForm(request.POST, instance=blog)
-        updateCreate(request, form, updateBlogErr)
+        updateCreate(request, form, updateBlogErr, categories, chosen_categories)
         
-    return render(request, 'private/create_blog.html', {'form': form})
+    return render(request, 'private/create_blog.html', {'form': form, 'categories': categories, 'chosen_categories': chosen_categories})
 
 
 # DELETE BLOG VIEW
@@ -153,17 +155,19 @@ def delete_blog_view(request, id):
     return render(request, 'private/delete_blog.html', {'blog': blog})
 
 # METHOD TO HANDLE UPDATE CREATE
-def updateCreate(request, form, error, categories=None):
+def updateCreate(request, form, error, categories=None, chosen_categories=None):
     # Check which button was pressed
         action = request.POST.get('action')
         
         if action == 'submit': 
             if form.is_valid():
+                selected_cate = form.cleaned_data.get('categories')
+                filtered_cate = list(set(selected_cate))
                 blog = form.save(commit=False)
                 blog.author = request.user
                 blog.status = "published"
                 blog.save()
-                form.save_m2m()
+                blog.categories.set(filtered_cate)
                 return redirect('home')
             else:
                 return render(request, 'private/create_blog.html', {"form": form, "error": error, "categories": categories})
@@ -183,8 +187,7 @@ def updateCreate(request, form, error, categories=None):
             return redirect("my_blog")
         
         elif action == "delete":
-            blog = form.save(commit=False)
-            blog.delete()
+            form.instance.delete()
             return redirect("my_blog")
         
-        return render(request, 'private/create_blog.html', {"form": form, "error": error, "categories": categories})
+        return render(request, 'private/create_blog.html', {"form": form, "error": error, "categories": categories, "chosen_categories": chosen_categories})
