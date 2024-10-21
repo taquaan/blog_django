@@ -12,22 +12,29 @@
     src="{{ blog.image.url }}"
     style="filter: brightness(40%); object-fit: cover"
   />
-  <div class="hero-text position-absolute text-white bottom-0 left-0 w-75 p-5">
+  <div class="hero-text position-absolute text-white bottom-0 left-0" style="padding: 3.5rem 4.5rem">
     <p class="mb-1" style="font-size: 1rem">
       {{blog.author.username}} - {{ blog.created_at|date:"d M Y" }}
     </p>
     <h1 class="mb-3" style="font-size: 3.5rem">{{ blog.title }}</h1>
     <p class="mb-3" style="font-size: 1.15rem">{{ blog.subtitle }}</p>
+    <div class="d-flex" style="gap: 10px">
+      {% for category in categories %}
+        {% if category.name != "None" %}
+        <span class="badge bg-primary p-2">{{ category.name }}</span>
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
 </div>
 
-<div class="main-content p-5">
+<div class="main-content" style="padding: 3rem 4.5rem">
   <p class="text-dark">{{ blog.introduction }}</p>
   <p class="text-dark">{{ blog.content|safe }}</p>
 </div>
 
-<section class="comment-section">
-  <form style="margin: 0 3rem" method="POST"
+<section class="comment-section" style="padding: 1rem 4.5rem">
+  <form method="POST"
   enctype="multipart/form-data">
     {% csrf_token %}
     <div class="mb-3">
@@ -49,15 +56,16 @@
     </div>
     <button type="submit" class="btn btn-primary w-100" name="create_comment">Submit</button>
   </form>
-  <div class="comment-list my-4" style="margin: 3rem">
-    <h5>Comments:</h5>
+  <div class="comment-list my-4">
+    <h6>Comments:</h6>
     <div class="container p-0 m-0" style="max-width: 100%">
-    {% for comment in comments %}
+    {% if comments %}
+      {% for comment in comments %}
       <div
         class="card comment position-relative"
       >
         <div class="card-body ">
-          <p class="m-1"><strong>{{ comment.author.username }} - {{ comment.created_at|date:"d M Y"  }}</strong></p>
+          <p><strong>{{ comment.author.username }} - {{ comment.created_at|date:"d M Y"  }}</strong></p>
           <p>{{comment.content}}</p></div>
 
         {% if comment.author == request.user %}
@@ -67,8 +75,12 @@
           <button type="submit" name="delete_comment"  class="btn btn-outline-danger position-absolute bottom-0 end-0 rounded border-4 px-2 m-2"><i class="fa-regular fa-trash-can" style="font-size: 2em"></i></button>
         </form>
         {% endif %}
-    </div>
-    {% endfor %}
+      </div>
+      {% endfor %}
+    {% else %}
+      <h5 class="m-5 text-secondary text-center">There are currently no Comment for this Blog</h5>
+    {% endif %}
+    
   </div>
 </section>
 {% endblock %}
