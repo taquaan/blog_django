@@ -1,18 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.utils import timezone
 from .forms import LoginForm, RegisterForm, BlogForm, CommentForm
 from .models import Blog, Comment, Categories
 from django.contrib.auth.decorators import login_required
 
 # HOME VIEW
 def home_view(request):
+    publishBlogByDate()
     recentBlogs = Blog.objects.filter(status="published").order_by("-created_at")[:3]
     previewBlogs = Blog.objects.filter(status="published")[:25]
     return render(request, 'public/home.html', {"recentBlogs": recentBlogs, "previewBlogs": previewBlogs})
 
 # BLOG LIST VIEW
 def blog_list_view(request):
+    publishBlogByDate()
     blogs = Blog.objects.filter(status="published").order_by("-created_at")
     return render(request, 'public/blog_list.html', {'blogs': blogs})
 
@@ -109,6 +112,7 @@ def register_view(request):
 
 # SEARCH VIEW
 def search_view(request):
+    publishBlogByDate()
     blogs = Blog.objects.filter(status="published").order_by("-created_at")[:15]
     if request.method == "POST":
         query = request.POST['search_query']
@@ -149,9 +153,9 @@ def update_blog_view(request, id):
 
 # CATEGORY FILTER VIEW
 def category_view(request, id):
+    publishBlogByDate()
     category = Categories.objects.get(id=id)
-    blogs = Blog.objects.filter(categories = category)
-    print(blogs)
+    blogs = Blog.objects.filter(status="published", categories = category)
     return render(request, 'public/blog_cate.html', {"category": category, "blogs": blogs})
 
 # METHOD TO HANDLE UPDATE CREATE
@@ -193,3 +197,14 @@ def updateCreate(request, form, error, categories=None, chosen_categories=None):
             return redirect("my_blog")
         
         return render(request, 'private/create_blog.html', {"form": form, "error": error, "categories": categories, "chosen_categories": chosen_categories})
+
+def publishBlogByDate():
+    utc = timezone.now()
+    now = timezone.localtime(utc)
+    scheduled_blogs = Blog.objects.filter(status="draft", published__lte=now)
+    print("List of scheduled blogs: " + str(scheduled_blogs))
+
+    for blog in scheduled_blogs:
+        blog.status = "published"
+        blog.save()
+        print(f"Published blog: {blog.title}")
