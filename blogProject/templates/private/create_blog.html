@@ -44,8 +44,21 @@
       class="form-control"
       id="{{ form.subtitle.id_for_label }}"
       name="{{ form.subtitle.name }}"
-      aria-describedby="titlelHelp"
       value="{{form.subtitle.value|default_if_none:''}}"
+    />
+  </div>
+
+  <!-- PUBLISHED UPLOAD FIELD -->
+  <div class="mb-3">
+    <label for="{{ form.published.id_for_label }}" class="form-label"
+      >Published Date:</label
+    >
+    <input
+      type="datetime-local"
+      class="form-control"
+      id="{{ form.published.id_for_label }}"
+      name="{{ form.published.name }}"
+      value="{{form.instance.published|date:'Y-m-d\TH:i'}}"
     />
   </div>
 

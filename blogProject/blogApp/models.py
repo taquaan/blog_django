@@ -19,7 +19,7 @@ class Blog(models.Model):
     blog_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     subtitle = models.CharField(max_length=300, null=True, blank=True)
-    published = models.DateTimeField(default=timezone.now)
+    published = models.DateTimeField(null=True, blank=True)
     introduction = models.TextField(default="This is the main introduction")
     categories = models.ManyToManyField(Categories)
     image = models.ImageField(upload_to='blog_images/', null=True, blank=True)
