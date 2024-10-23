@@ -73,8 +73,8 @@
       id="{{ form.image.id_for_label }}"
       name="{{ form.image.name }}"
     />
-    {% if form.intance.image %}
-    <img src="{{ form.instance.image.url }}" />
+    {% if form.instance.image %}
+    <img class="mt-4 w-25 rounded border border-primary border-3" src="{{ form.instance.image.url }}" />
     {% endif %}
   </div>
 
@@ -132,7 +132,7 @@
       id="{{ form.introduction.id_for_label }}"
       style="height: 100px"
     >
-{{form.subtitle.value|default_if_none:""}}</textarea
+{{form.introduction.value|default_if_none:""}}</textarea
     >
   </div>
 

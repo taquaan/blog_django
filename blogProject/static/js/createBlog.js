@@ -34,7 +34,6 @@ document.querySelector(".add-new-cate").addEventListener("click", (e) => {
     deleteBtn.addEventListener("click", (e) => {
       e.preventDefault();
       const removedCate = deleteBtn.closest(".cate-field");
-      console.log(removedCate);
       if (removedCate) {
         removedCate.remove();
       } else {
